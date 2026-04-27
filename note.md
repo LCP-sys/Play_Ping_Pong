@@ -1,0 +1,5 @@
+一般來說會把Message和Service放在msg和srv資料夾中，這樣在編譯時才會自動產生相關的檔案，如果沒有放在這兩個資料夾中，就需要自己手動產生相關的檔案。
+
+然而習慣上我們會把自定義訊息獨立成一個Package，這樣可以讓其他Packages也可以使用，而不是每個Package都要自己寫一次，如果之間有修改容易造成Message不一致的問題。
+
+這個不成文的規定在ROS2中又更明顯被限制。由於C++和Python已經不能共用Package，而自定義Message又只能用CMake來建立，所以將Message獨立成一個Package，讓不管是C++或是Python的Package都可以使用。
