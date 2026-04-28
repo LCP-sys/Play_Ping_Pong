@@ -24,7 +24,9 @@ class State(Node):
         self.scaler = joblib.load(scaler_path)
         self.mode = None
         self.ball_p = [0.0,0.0,0.0]
+        self.ball_p = [0.0,0.0,0.0]
         self.ball_v = [0.0, 0.0, 0.0]
+        self.goal_ball=[0.0,0.0,0.0]
         self.goal_ball=[0.0,0.0,0.0]
         self.s1 = self.s2 = self.s3 = self.s4 = self.s5 = self.s6 = 0.0
         self.goal_s1 = self.goal_s2 = self.goal_s3 = self.goal_s4 = self.goal_s5 = self.goal_s6 = 0.0
@@ -83,6 +85,7 @@ class State(Node):
             self.get_logger().info("  ESC → exit manual mode")
             self.start_keyboard_listener()
         elif mode == 'ai':
+        elif mode == 'ai':
             if self.debug_timer is None:
                 self.debug_timer = self.create_timer(1.0, self.debug_print)
         self.ai_control_timer = self.create_timer(0.1, self.update_ai_control)
@@ -138,6 +141,7 @@ class State(Node):
             setattr(self, attr, new_val)
 
             self.publish_goal(attr, new_val)
+
 
             robot_attr = attr.replace('goal_', '')  
             robot_val = getattr(self, robot_attr)   
