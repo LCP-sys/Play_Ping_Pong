@@ -88,10 +88,15 @@ class State(Node):
         
             if self.debug_timer is None:
                 self.debug_timer = self.create_timer(1.0, self.debug_print)
-        self.ai_control_timer = self.create_timer(0.1, self.update_ai_control)
-        self.update_ai_control()
+            for i in range(3):
+                if self.ball_v[i] > 0:
+                    self.ball_v[i] = 1.0
+                elif self.ball_v[i] < 0:
+                    self.ball_v[i] = -1.0
+            self.ai_control_timer = self.create_timer(0.1, self.update_ai_control)
+            self.update_ai_control()
     def update_ai_control(self):
-        # 使用最新的 ball_p 和 ball_v 进行预测///
+ 
         goal = self.predict_landing_position(
             self.ball_p[0], self.ball_p[1], self.ball_p[2],
             self.ball_v[0], self.ball_v[1], self.ball_v[2]
@@ -167,7 +172,7 @@ class State(Node):
             msg.data = value
             self.goal_pubs[goal_name].publish(msg)
     def predict_landing_position(self,posX, posY, posZ, velX, velY, velZ):
-
+        
 
         
         # 標準化
