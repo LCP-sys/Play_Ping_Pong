@@ -7,13 +7,24 @@ import termios
 import tty
 import select
 from rclpy.executors import SingleThreadedExecutor
+import numpy as np
+import pandas as pd
+import joblib
+from sklearn.preprocessing import StandardScaler
+import os
 class State(Node):
     def __init__(self):
         super().__init__('state')
-        self.mode = None
-        self.ball_p = 0.0
-        self.ball_v = [0.0, 0.0, 0.0]
+        base_dir = os.path.dirname(__file__)
+        model_path = os.path.join(base_dir, "mlp_model.pkl")
+        scaler_path = os.path.join(base_dir, "scaler.pkl")
 
+        self.model = joblib.load(model_path)
+        self.scaler = joblib.load(scaler_path)
+        self.mode = None
+        self.ball_p = [0.0,0.0,0.0]
+        self.ball_v = [0.0, 0.0, 0.0]
+        self.goal_ball=[0.0,0.0,0.0]
         self.s1 = self.s2 = self.s3 = self.s4 = self.s5 = self.s6 = 0.0
         self.goal_s1 = self.goal_s2 = self.goal_s3 = self.goal_s4 = self.goal_s5 = self.goal_s6 = 0.0
 
@@ -69,9 +80,11 @@ class State(Node):
             self.get_logger().info("  o/p → goal_s5  +/-   |  a/s → goal_s6  +/-")
             self.get_logger().info("  ESC → exit manual mode")
             self.start_keyboard_listener()
-        else:
+        elif mode == 'ai':
             if self.debug_timer is None:
                 self.debug_timer = self.create_timer(1.0, self.debug_print)
+            self.goal_ball=predict_landing_position(self.ball_p[0],self.ball_p[1],self.ball_p[2],self.ball_v[0],self.ball_v[1],self.ball_v[2])
+            self.auto_go_to_goal()
 
     def start_keyboard_listener(self):
         if self.keyboard_thread and self.keyboard_thread.is_alive():
@@ -115,7 +128,7 @@ class State(Node):
             setattr(self, attr, new_val)
 
             self.publish_goal(attr, new_val)
-            
+
             robot_attr = attr.replace('goal_', '')  
             robot_val = getattr(self, robot_attr)   
             print(f"\r{attr} = {new_val:.3f} | {robot_attr} = {robot_val:.3f}  ", end='', flush=True)
@@ -138,7 +151,35 @@ class State(Node):
             msg = Float32()
             msg.data = value
             self.goal_pubs[goal_name].publish(msg)
+    def predict_landing_position(posX, posY, posZ, velX, velY, velZ):
 
+        input_data = pd.DataFrame([[posX, posY, posZ, velX, velY, velZ]],
+                                columns=['posX', 'posY', 'posZ', 'velX', 'velY', 'velZ'])
+        
+        # 標準化
+        input_scaled = self.scaler.transform(input_data)
+        prediction = self.model.predict(input_scaled)
+        return (round(prediction[0,0], 2),
+                round(prediction[0,1], 2),
+                round(prediction[0,2], 2))
+    def auto_go_to_goal(self):
+        x, y, z = self.goal_ball
+
+        if y > 0.15:
+            goal=-z
+            if x > 0.06:
+                self.goal_s4=goal
+            elif x < 0.06: 
+                self.goal_s5=goal
+            else:
+                self.goal_s6=goal           
+        elif y < 0.15:
+            if x > 0.06:
+                self.goal_s1=goal
+            elif x < 0.06: 
+                self.goal_s2=goal
+            else:
+                self.goal_s3=goal   
 def main():
     rclpy.init()
     while True:
