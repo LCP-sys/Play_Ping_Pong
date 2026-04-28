@@ -91,7 +91,7 @@ class State(Node):
         self.ai_control_timer = self.create_timer(0.1, self.update_ai_control)
         self.update_ai_control()
     def update_ai_control(self):
-        # 使用最新的 ball_p 和 ball_v 进行预测
+        # 使用最新的 ball_p 和 ball_v 进行预测///
         goal = self.predict_landing_position(
             self.ball_p[0], self.ball_p[1], self.ball_p[2],
             self.ball_v[0], self.ball_v[1], self.ball_v[2]
