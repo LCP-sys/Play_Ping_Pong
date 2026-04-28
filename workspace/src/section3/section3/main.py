@@ -100,7 +100,7 @@ class State(Node):
             if self.debug_timer is None:
                 self.debug_timer = self.create_timer(1.0, self.debug_print)
                 
-            # 注意：AI 模式中会强制归一化速度，保留原逻辑
+   
             for i in range(3):
                 if self.ball_v[i] > 0:
                     self.ball_v[i] = 1.0
@@ -279,7 +279,7 @@ class State(Node):
         if y > 0.15:
             if x > 0.06:
                 self.goal_s4 = goal_1
-            elif x < -0.06:    # 注意原代码中 x < 0.06 有误，应该是 x < -0.06 才映射到 s5
+            elif x < -0.06:      
                 self.goal_s5 = goal_1
             else:
                 self.goal_s6 = goal_1
