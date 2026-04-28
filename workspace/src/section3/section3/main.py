@@ -85,7 +85,7 @@ class State(Node):
             self.get_logger().info("  ESC → exit manual mode")
             self.start_keyboard_listener()
         elif mode == 'ai':
-        elif mode == 'ai':
+        
             if self.debug_timer is None:
                 self.debug_timer = self.create_timer(1.0, self.debug_print)
         self.ai_control_timer = self.create_timer(0.1, self.update_ai_control)
