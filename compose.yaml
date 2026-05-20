@@ -7,8 +7,14 @@ services:
       - "10000:10000"
 
     volumes:
-      - ./workspace/src:/workspace/src
-      - ./rebuild_colcon.rc:/root/rebuild_colcon.rc
+      # 將本機的 KNN 程式碼資料夾掛載到容器內的 KNN 工作區
+      - ./workspace/KNN/src:/workspace/KNN/src
+
+      # 將本機的 MLP 程式碼資料夾掛載到容器內的 MLP 工作區
+      - ./workspace/MLP/src:/workspace/MLP/src
+      - ./workspace/TCP/src:/workspace/TCP/src
+      - ./workspace/THM/src:/workspace/THM/src
+      - ./workspace/ROS-TCP-Endpoint:/workspace/ROS-TCP-Endpoint/src
 
     stdin_open: true
     tty: true
