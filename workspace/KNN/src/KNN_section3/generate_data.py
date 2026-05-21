@@ -35,7 +35,7 @@ def calculate_theoretical_landing(x, y, z, vx, vy, vz):
     return land_x, target_y, land_z
 
 def main():
-    csv_path = '/workspace/KNN/src/section3/training_data.csv'
+    csv_path = '/workspace/KNN/src/KNN_section3/training_data.csv'
     target_samples = 300000 
     
     # 🌟 核心對齊 3b.pdf：將速度強制鎖死在這 4 個離散等級

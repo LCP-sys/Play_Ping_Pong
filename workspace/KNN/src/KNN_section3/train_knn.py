@@ -5,7 +5,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.pipeline import make_pipeline
 import joblib
 
-data = pd.read_csv('/workspace/KNN/src/section3/training_data.csv')
+data = pd.read_csv('/workspace/KNN/src/KNN_section3/training_data.csv')
 X = data[['x', 'y', 'z', 'vx', 'vy', 'vz']].values
 
 # 確保輸出是 3 維度
@@ -22,5 +22,5 @@ knn = make_pipeline(
 )
 knn.fit(X, y)
 
-joblib.dump(knn, '/workspace/KNN/src/section3/knn_model.pkl')
+joblib.dump(knn, '/workspace/KNN/src/KNN_section3/knn_model.pkl')
 print("✅ 模型已重新產生！這次 AI 終於睜開眼睛了！")
