@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-package_name = 'section3'
+package_name = 'KNN_section3'
 
 setup(
     name=package_name,
@@ -24,7 +24,7 @@ setup(
     },
     entry_points={
     'console_scripts': [
-        'state = section3.main:main',  # 這一行將 state 連結到 main.py 的 main 函式
+        'state = KNN_section3.main:main',  # 這一行將 state 連結到 main.py 的 main 函式
     ],
 },
 )

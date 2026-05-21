@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 # 🌟 修正一：套件名稱必須是 section3，對應 src/ 底下的資料夾名稱
-package_name = 'section3'
+package_name = 'TCP_section3'
 
 setup(
     name=package_name,
@@ -27,7 +27,7 @@ setup(
     entry_points={
         'console_scripts': [
             # 🌟 修正二：嚴格對齊「內層資料夾.主檔名:入口函數」
-            'state = section3.main:main',
+            'state = TCP_section3.main:main',
         ],
     },
 )
